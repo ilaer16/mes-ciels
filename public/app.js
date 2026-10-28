@@ -271,6 +271,12 @@ function renderPanels(matched) {
   $('#tab-formats').innerHTML = `<div class="formats">` + Object.entries(FORMATS).filter(([k]) => items.some(i => i.format === k)).map(([k, f]) =>
     `<button class="chip" data-format="${k}" aria-pressed="${state.formats.has(k)}"><span class="dot" style="color:${f.color}"></span>${f.label} <span class="n">${matched.filter(i => i.format === k).length}</span></button>`).join('') + `</div>`;
 
+  // Outils : accès direct aux sites en ligne
+  const host = u => { try { return new URL(u).hostname.replace(/^www./, ''); } catch { return u; } };
+  $('#tab-tools').innerHTML = `<p class="hint">Mes outils en ligne, libres d'accès.</p>` + items.filter(i => i.format === 'outil').sort((a, b) => b.date.localeCompare(a.date))
+    .map(it => `<div class="tool-row"><button class="item-row" data-id="${it.id}"><span class="t"><span class="dot" style="color:${it.f.color}"></span><span>${esc(it.titre)}</span></span><span class="m">${esc(host(it.url))}</span></button>
+      <a class="btn primary small" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="Ouvrir ${esc(it.titre)}">Ouvrir ↗</a></div>`).join('');
+
   // Récents
   const recent = items.filter(i => i.recent).sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
   $('#tab-recent').innerHTML = `<label class="switch"><input type="checkbox" id="only-recent" ${state.recent ? 'checked' : ''}> Ne montrer que les ajouts récents (anneau orange)</label>` + recent.map(i => row(i)).join('');
