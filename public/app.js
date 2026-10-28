@@ -31,6 +31,7 @@ for (const it of items) {
 
 $('#author').textContent = site.auteur;
 $('#intro').textContent = site.intro;
+$('#majour').textContent = 'Mis à jour le ' + new Date(site.majour).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 if (site.linkedin) Object.assign($('#linkedin-profile'), { href: site.linkedin, hidden: false });
 
 const state = { q: '', themes: new Set(), formats: new Set(), tags: new Set(), recent: false, selected: null, list: matchMedia('(max-width: 760px)').matches };
@@ -340,7 +341,7 @@ function select(it) {
     ${it.voisins.length ? `<h3>Dans la même constellation</h3>${it.voisins.map(([id]) => row(items[id])).join('')}` : ''}`;
   $('#card').hidden = false;
   $('#card').scrollTop = 0;
-  history.replaceState(null, '', '#' + it.cle);
+  if (location.hash !== '#' + it.cle) history.pushState(null, '', '#' + it.cle); // le bouton Retour referme la fiche
   scene.remove(focusLines);
   focusLines = segments(it.voisins.map(([id]) => [it.pos, items[id].pos, new THREE.Color(it.f.color), new THREE.Color(items[id].f.color)]), 0.9);
   scene.add(focusLines);
@@ -353,7 +354,7 @@ function closeCard() {
   if (!state.selected) return;
   state.selected = null; $('#card').hidden = true; document.body.classList.remove('card-open');
   scene.remove(focusLines); focusLines = null;
-  history.replaceState(null, '', location.pathname);
+  if (location.hash) history.pushState(null, '', location.pathname);
   if (!state.list) frame(filtering() ? items.filter(i => i.match) : []);
 }
 
@@ -390,6 +391,28 @@ function setList(on) {
   $('#view-toggle').setAttribute('aria-pressed', on);
 }
 $('#view-toggle').addEventListener('click', () => setList(!state.list));
+
+addEventListener('popstate', () => { const it = items.find(i => '#' + i.cle === location.hash); it ? select(it) : closeCard(); });
+
+// Retour à la vue d'ensemble : logo, bouton ⌂
+function home(e) {
+  e?.preventDefault();
+  state.themes.clear(); state.formats.clear(); state.tags.clear(); state.recent = false; state.q = ''; $('#q').value = '';
+  closeCard(); update();
+  if (!state.list) frame([]);
+}
+$('#home-link').addEventListener('click', home);
+$('#home').addEventListener('click', home);
+
+// À propos
+const about = $('#about');
+$('#about-stats').textContent = `${items.length} ressources · ${themes.length} constellations · ${items.filter(i => i.contenu).length} documents lus en entier · ${$('#majour').textContent.toLowerCase()}`;
+$('#about-open').addEventListener('click', () => {
+  $('#about-legend').innerHTML = Object.values(FORMATS).map(f => `<li><span class="dot" style="color:${f.color}"></span>${f.label}</li>`).join('');
+  about.showModal();
+});
+$('#about-close').addEventListener('click', () => about.close());
+about.addEventListener('click', e => { if (e.target === about) about.close(); });
 
 addEventListener('keydown', e => {
   if (e.key === '/' && document.activeElement !== $('#q')) { e.preventDefault(); $('#q').focus(); }

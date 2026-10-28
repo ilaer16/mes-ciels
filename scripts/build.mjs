@@ -82,6 +82,6 @@ for (const it of items) {
 }
 
 const themes = [...new Set(items.map(i => i.theme))];
-const out = { site: SITE, themes, items: items.map(({ text, tf, vec, ...rest }) => rest) };
+const out = { site: { ...SITE, majour: new Date().toISOString().slice(0, 10) }, themes, items: items.map(({ text, tf, vec, ...rest }) => rest) };
 fs.writeFileSync('public/data.json', JSON.stringify(out));
 console.log(`${items.length} ressources, ${themes.length} thèmes, ${items.filter(i => i.contenu).length} PDF indexés -> public/data.json`);

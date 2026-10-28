@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
@@ -17,9 +18,18 @@
 
 <aside id="panel">
   <header class="brand">
-    <h1><span class="star" aria-hidden="true">✦</span> Mes ciels</h1>
-    <p class="author"><span id="author"></span> <a id="linkedin-profile" hidden target="_blank" rel="noopener">LinkedIn ↗</a></p>
-    <p id="intro" class="intro"></p>
+    <a href="/" id="home-link" class="wordmark" title="Retour à la vue d'ensemble">
+      <svg class="logo" viewBox="0 0 64 40" aria-hidden="true">
+        <polyline class="logo-line" points="6,31 18,9 32,23 46,7 58,29" pathLength="1"/>
+        <circle class="logo-star" cx="6" cy="31" r="2.4"/><circle class="logo-star" cx="18" cy="9" r="2.9"/>
+        <circle class="logo-glow" cx="32" cy="23" r="7"/><circle class="logo-star accent" cx="32" cy="23" r="3.6"/>
+        <circle class="logo-star" cx="46" cy="7" r="2.6"/><circle class="logo-star" cx="58" cy="29" r="2.2"/>
+      </svg>
+      <h1>Mes ciels</h1>
+    </a>
+    <p class="tagline">Synthèses, notes de lecture &amp; outils, constellés</p>
+    <p class="author"><span id="author"></span> · <a id="linkedin-profile" hidden target="_blank" rel="noopener">LinkedIn ↗</a> · <button id="about-open" class="link">À propos</button></p>
+    <p id="majour" class="updated"></p>
   </header>
 
   <div class="search">
@@ -43,13 +53,36 @@
   <section id="results" class="results" aria-live="polite"></section>
 </aside>
 
-<div class="top-actions"><button id="sky-toggle" class="view-toggle"></button><button id="view-toggle" class="view-toggle" aria-pressed="false">Vue liste</button></div>
+<div class="top-actions"><button id="home" class="view-toggle" title="Effacer la recherche et les filtres">⌂ Vue d'ensemble</button><button id="sky-toggle" class="view-toggle"></button><button id="view-toggle" class="view-toggle" aria-pressed="false">Vue liste</button></div>
 <main id="list-view" class="list-view" hidden aria-label="Ressources"></main>
 
 <article id="card" class="card" hidden aria-labelledby="card-title">
   <button class="close" id="card-close" aria-label="Fermer la fiche">×</button>
   <div id="card-body"></div>
 </article>
+
+<dialog id="about" aria-labelledby="about-title">
+  <button class="close" id="about-close" aria-label="Fermer">×</button>
+  <h2 id="about-title">À propos de Mes ciels</h2>
+  <p id="intro" class="lead"></p>
+  <h3>Pourquoi un ciel ?</h3>
+  <p>Mes ressources vivaient sur un Digipad, rangées en colonnes comme sur des étagères. J'ai voulu un lieu où elles se répondent : chaque ressource devient une étoile, chaque thème une constellation, et des fils relient les étoiles qui parlent des mêmes choses. <em>Ciel</em> comme les étoiles, et comme le <em>cloud</em> : un nuage de ressources.</p>
+  <h3>Lire le ciel</h3>
+  <ul class="legend" id="about-legend"></ul>
+  <p>L'<b>anneau orange</b> signale un ajout récent. Les <b>fils</b> relient chaque ressource à celles dont le vocabulaire est le plus proche.</p>
+  <h3>Trouver une information</h3>
+  <ul>
+    <li>La <b>recherche</b> lit tout le texte, y compris <b>l'intérieur des PDF</b>, sans tenir compte des accents.</li>
+    <li>Le <b>nuage de mots-clés</b> est recalculé sur ce qui est affiché : chaque mot cliqué affine la sélection.</li>
+    <li>Chaque fiche a un <b>lien permanent</b>, à partager.</li>
+  </ul>
+  <h3>Sous le capot</h3>
+  <p>À chaque ajout, un petit programme lit le texte des PDF, repère les mots les plus caractéristiques de chaque ressource (méthode TF-IDF), mesure la proximité entre ressources pour tracer les fils, et range automatiquement mes posts LinkedIn dans la constellation la plus proche. Aucune IA n'intervient à ce moment-là : seulement du calcul sur les mots.</p>
+  <p>Le site est statique : pas de base de données, pas de compte, <b>pas de cookie ni de traceur</b>. La 3D utilise Three.js ; le contenu est sur GitHub et le site est publié par Netlify.</p>
+  <h3>Comment il a été fait</h3>
+  <p>Conçu et développé en dialogue avec Claude (Anthropic), comme mes autres outils. Le code est ouvert : <a href="https://github.com/ilaer16/mes-ciels" target="_blank" rel="noopener">github.com/ilaer16/mes-ciels</a>. Une remarque, une ressource qui ne s'ouvre pas ? Écrivez-moi sur LinkedIn.</p>
+  <p class="updated" id="about-stats"></p>
+</dialog>
 
 <noscript><p class="noscript">Ce site a besoin de JavaScript pour afficher la constellation.</p></noscript>
 <script type="module" src="app.js"></script>
