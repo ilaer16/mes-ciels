@@ -25,7 +25,7 @@ public/files/          ← PDF et images
 public/ajouter/        ← la page d'ajout
 scripts/build.mjs      ← texte des PDF, posts LinkedIn, thèmes auto, mots-clés, liens -> public/data.json
 ```
-Champs d'une ressource : `titre`, `theme` (facultatif : automatique), `format` (`outil`, `pdf`, `image`, `lien`, `linkedin`), `date`, `url`, `vignette`, `texte`, `linkedin`, `nouveau` (anneau orange forcé ; sinon automatique pendant 120 jours).
+Champs d'une ressource : `titre`, `theme` (facultatif : automatique), `format` (`outil`, `pdf`, `image`, `lien`, `linkedin`), `date`, `url`, `vignette`, `texte`, `linkedin`. L'anneau orange « récent » marque les ressources ajoutées le jour du dernier ajout.
 
 ## En local
 `npm ci`, `npm run build`, `npm run dev` (http://localhost:8090), `npm test`.

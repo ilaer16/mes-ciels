@@ -12,7 +12,6 @@ const FORMATS = {
   lien:     F('Lien, présentation', '#ffe066', '#e67700', 0.9,  'Ouvrir le lien'),
   linkedin: F('Post LinkedIn',      '#b197fc', '#6741d9', 0.85, 'Voir le post'),
 };
-const RECENT_DAYS = 120;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -26,7 +25,7 @@ for (const it of items) {
   it.f = FORMATS[it.format] || FORMATS.lien;
   it.n = { titre: norm(it.titre), texte: norm(it.texte), contenu: norm(it.contenu), mots: norm(it.mots.map(m => m[0]).join(' ')) };
   it.n.all = `${it.n.titre} ${it.n.texte} ${it.n.contenu} ${it.n.mots}`;
-  it.recent = !!it.nouveau || (maxDate - new Date(it.date)) / 864e5 <= RECENT_DAYS;
+  it.recent = +new Date(it.date) === maxDate; // récent = ajouté le jour du dernier ajout
 }
 
 $('#author').textContent = site.auteur;
