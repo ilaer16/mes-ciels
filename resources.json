@@ -1,0 +1,342 @@
+[
+  {
+    "titre": "PARCOURSUP Origine",
+    "theme": "Parcoursup",
+    "format": "outil",
+    "date": "2026-07-30",
+    "url": "https://parcoursuporigine.netlify.app/",
+    "texte": "📊 J'ai construit un outil pour essayer de donner du sens aux données Parcoursup de nos élèves — côté lycée d'origine.\n\nUn peu de contexte.\n\nIl y a deux univers de données dans Parcoursup :\n\n① Les données des formations d'accueil — disponibles en open data, exploitables, croisables. C'est ce que NOVA·Parcoursup Explorer permet déjà de visualiser : taux d'accès, profils de candidats, tension par formation, à l'échelle nationale. → https://lnkd.in/eenNcC7a\n\n② Les données du lycée d'origine — réservées aux équipes de direction, accessibles uniquement via l'espace établissement Parcoursup. Taux de classement, taux de proposition, ratio vœux/admis par filière, entonnoir de déperdition, situations sans admission… Des tableaux riches en information, mais présentés sous une forme qui rend toute analyse comparative difficile.\n\nNOVA·Parcoursup Origine est une première ébauche de réflexion.\n\nUn fichier HTML autonome — aucune installation, aucun serveur — qui permet à n'importe quelle équipe de direction de :\n✦ Visualiser 4 sessions de données côte à côte\n✦ Comparer deux années sur tous les indicateurs\n✦ Détecter automatiquement les signaux d'alerte (ratios critiques, écarts vs national)\n✦ Distinguer les vrais blocages (échec bac, aucune proposition) des démissions volontaires\n✦ Partager l'outil à d'autres lycées — libre et open source"
+  },
+  {
+    "titre": "PARCOURSUP",
+    "theme": "Parcoursup",
+    "format": "outil",
+    "date": "2026-07-30",
+    "url": "https://parcoursupexplorer.netlify.app/",
+    "texte": "🎓 J'ai construit un outil open data pour aider les lycéens à explorer Parcoursup.\n[\n◾ L'idée de départ est simple : Parcoursup publie ses données en open data. Pourquoi ne pas les rendre lisibles pour un lycéen ?\n\n𝗖𝗲 𝗾𝘂𝗲 𝗹'𝗼𝘂𝘁𝗶𝗹 𝗽𝗲𝗿𝗺𝗲𝘁 :\n\n→ Choisir ses spécialités de bac et voir immédiatement quelles formations sont accessibles, avec leur taux d'accès réel (2021–2024)\n→ Comparer les 3 scénarios d'abandon de spécialité entre la 1ère et la Terminale\n→ Explorer l'évolution de la sélectivité sur 4 ans\n→ Rechercher un établissement précis et accéder aux données 2025 en temps réel : profil des admis, données d'insertion, salaire médian, localisation\n→ Sauvegarder ses formations favorites\n→ Un glossaire intégré pour comprendre taux d'accès, rang du dernier appelé, InserJeunes…\n\n𝗟𝗲𝘀 𝗱𝗼𝗻𝗻é𝗲𝘀 𝘀𝗼𝗻𝘁 𝗼𝗳𝗳𝗶𝗰𝗶𝗲𝗹𝗹𝗲𝘀 : Parcoursup MESR, InserJeunes (DEPP/DARES), InserSup (SIES).\n\nCet outil a été conçu en collaboration avec Claude (Anthropic).\nIl est libre d'accès, sans publicité, sans compte requis.\n\nVersion 2 :\n→ 𝗡𝗼𝘂𝘃𝗲𝗮𝘂 : faire le chemin inverse — sélectionner une formation (CPGE Scientifique, Licence Psychologie, Sciences Po…) et voir quelles paires de spécialités donnent le meilleur taux d'accès à cette formation. Utile quand on sait où on veut aller, mais pas encore comment y arriver. Note : ces données sont nationales et agrégées — elles indiquent une tendance, pas une garantie par établissement."
+  },
+  {
+    "titre": "EPLESCOPE — la fiche d'identité open data d'un établissement scolaire.",
+    "theme": "Établissement",
+    "format": "outil",
+    "date": "2026-07-30",
+    "url": "https://eplescope.netlify.app/",
+    "texte": "L'idée de départ est simple : quand on pilote un établissement, on passe un temps fou à chercher des données dispersées sur plusieurs portails, dans des formats incompatibles, sans aucune possibilité de comparaison temporelle ou de mise en contexte. Je voulais rapidement croiser les datas disponibles pour créer la fiche établissement.\n\nÀ partir d'un simple nom ou d'un code RNE, l'outil compose en quelques secondes une fiche synthétique : profil social (IPS), taux de réussite et valeur ajoutée, effectifs, insertion professionnelle, Parcoursup, et contexte territorial de la commune.\n\nCe qui change depuis la première version : conçu au départ pour les seuls lycées généraux et technologiques, EPLESCOPE couvre désormais tout le second degré — collèges, LGT, lycées professionnels et polyvalents. Chaque fiche s'adapte automatiquement au type d'établissement.\n\nAutre nouveauté : la réussite peut être comparée aux références nationale et académique, et l'IPS est replacé dans son contexte.\n\nLe principe reste inchangé : 100 % open data (MENJ-DEPP, INSEE), aucune donnée personnelle, aucun compte, une seule page web.\n\nUn rappel de prudence assumé : la « valeur ajoutée » est un écart modélisé au résultat attendu, non un jugement de qualité ; l'IPS décrit un contexte social, pas une performance.\n\nÀ explorer ici : https://eplescope.netlify.app/\n\n#OpenData #Éducation #DataViz #Orientation #ÉducationNationale"
+  },
+  {
+    "titre": "NOVA EDT",
+    "theme": "Établissement",
+    "format": "outil",
+    "date": "2026-07-30",
+    "url": "https://novaedt.netlify.app/",
+    "texte": "Un outil pour lire l'emploi du temps avant d'en parler.\n\nChaque année, les conseils d'enseignement et les fiches de vœux arrivent sans qu'on ait vraiment eu le temps de regarder ce que l'année écoulée disait.\n\nCombien d'heures sur telle demi-journée ? Quelle salle sous pression ? Quel niveau sans vraie coupure méridienne ?\n\nJ'ai construit NOVA · EDT pour rendre cette lecture visible — avant les arbitrages, pas après.\n\n→ Vue structure : charge globale de l'établissement, jour par jour, matin / après-midi\n→ Vue par classe : équilibre M/APM, pause repas réelle, répartition hebdomadaire\n→ Vue par salle : taux d'occupation, groupes peu ou trop sollicités\n→ Heatmap : tableau de tension croisé, filtré par niveau.\n\nL'outil tourne entièrement en local. Vos fichiers XML (EDT · Index Éducation) ne quittent pas votre machine. Aucun serveur, aucune donnée transmise. Compatible RGPD.\n\n🔗 la version en ligne est une démonstration sur données anonymisées.\nLe fichier HTML est téléchargeable directement depuis la page — pour un usage avec vos propres données, c'est lui qu'il faut ouvrir."
+  },
+  {
+    "titre": "Comprendre la DGH !",
+    "theme": "Établissement",
+    "format": "pdf",
+    "date": "2026-07-30",
+    "nouveau": true,
+    "url": "files/1769275698436_ekmay55hmde.pdf",
+    "vignette": "files/1769275698436_ekmay55hmde.jpg",
+    "texte": "Comment demander un avis éclairé aux élèves si on ne leur donne pas les clés ? 🗝️\n\n La DGH (Dotation Globale Horaire), le TRMD, la structure pédagogique... Autant de termes techniques qui peuvent rendre les instances du lycée opaques.\n\nPourtant, la consultation du CVL (Conseil des délégués pour la Vie Lycéenne) est une étape obligatoire et cruciale avant le vote de la répartition des moyens en Conseil d'Administration.\nPour éviter que cette consultation ne soit qu'une formalité, j'ai conçu un support visuel et pédagogique à destination de nos élus lycéens.\nIl me servira de point d'appui pour aborder ensuite la répartition des moyens au travers d'un second support spécifique au LISA et à sa structure 26/27.\n\n🎯 L'objectif ? Vulgariser cette mécanique budgétaire horaire pour permettre un véritable exercice démocratique. ✅ Comprendre d'où viennent les heures.\n✅ Visualiser le lien entre une ligne budgétaire, une option, l'AP ou un dédoublement.\n✅ Saisir l'impact de leur avis avant le CA.\n\n👉 \"Comprendre pour agir\" : c'est la compétence clé que nous devons transmettre à nos délégués... et pas seulement 😉"
+  },
+  {
+    "titre": "🎓 Chef d’établissement, j’ai vécu 3 ans avec ChatGPT",
+    "theme": "IA et éducation",
+    "format": "pdf",
+    "date": "2026-07-30",
+    "nouveau": true,
+    "url": "files/1771683991331_h9paak1e1rm.pdf",
+    "vignette": "files/1771683991331_h9paak1e1rm.jpg",
+    "texte": "Et j'ai mis un terme à mon abonnement avec Open AI…\nJ'en ai profité pour demander à l’IA une lecture analytique et critique de nos trois années de travail partagé. J'ai pris quelques semaines pour en faire synthèse et réflexion. L'écriture a été collaborative, avec plusieurs outils d'IA.\nUn peu plus de 15 pages pour faire une pause. 15 pages à l'obsolescence déjà programmée.\n\n👉 Je me suis demandé :\n+ comment l’IA a reconfiguré mes gestes professionnels (veille, lecture experte, communication, pilotage, formation, création d’outils) ;\n+ ce que j’ai accepté de déléguer… et les enjeux qui me semblent essentiels : la gestion des données, la place du langage, les enjeux politiques et transformatifs, le pilotage des risques, ...\n+ comment les travaux de recherche sur le leadership augmenté, cognitive offloading, Sapir-Whorf et les compétences psychosociales éclairent ces transformations.\n\nCe texte est écrit « à deux mains » : l’une humaine, l’autre algorithmique ; la responsabilité du sens reste, elle, entièrement humaine !"
+  },
+  {
+    "titre": "L'Intelligence Artificielle - Levier de Transformation pour l'Inspecteur EVS",
+    "theme": "IA et éducation",
+    "format": "pdf",
+    "date": "2026-07-30",
+    "nouveau": true,
+    "url": "files/1768741309032_c0zdf26hyl5.pdf",
+    "vignette": "files/1768741309032_c0zdf26hyl5.jpg",
+    "texte": "'ai eu le plaisir d'intervenir sur un sujet qui me passionne : l'Intelligence Artificielle comme levier de transformation...\n\nLoin des fantasmes ou des craintes, nous avons posé un cadre clair et opérationnel : ✅ L'IA pour le contexte, jamais pour le contenu.\n✅ L'IA comme copilote, pas comme pilote. Avec des exemples : aide à détecter des signaux faibles (décrochage scolaire), à synthétiser des données complexes (climat scolaire) ou à personnaliser des formations.\n✅ Le discernement avant tout. L'outil ne remplace pas l'expertise ...\n\nLes échanges furent nombreux, tourbillonnants, les questions ont fusé !\nNous avons achevé les échanges en disant que ce n'est pas tant une question de technique, mais avant tout de réflexion libre et d'idéation afin d'interroger nos pratiques et nos désirs de changement. Il sera alors bien temps, de vérifier si un outil comme l'IA est un outil adapté, éthique et s'il amène une plus-value."
+  },
+  {
+    "titre": "💡 L’IA entre dans l’École… avec un cadre.",
+    "theme": "IA et éducation",
+    "format": "lien",
+    "date": "2025-07-31",
+    "url": "https://gamma.app/docs/LIA-EN-EDUCATION-CADRE-DUSAGE--qto0pq84q51leq6",
+    "texte": "Le ministère de l’Éducation nationale publie en juin 2025 un cadre d’usage de l’intelligence artificielle en éducation, attendu et nécessaire.\n\n🔍 Objectif : donner des repères aux enseignants, personnels et élèves pour utiliser l’IA de façon éthique, responsable et pédagogique.\n✅ Cette synthèse du document rappelle :\n – que l’IA peut soutenir le travail enseignant (préparation, correction, traduction…)\n – qu’elle ne remplace ni l’esprit critique, ni l’effort, ni la relation humaine\n – que les usages doivent rester transparents, encadrés et respectueux des données.\n\nElle intègre les liens vers la ressource, et vers un podcast.\n\nVersion pdf : https://lnkd.in/ehdw576m"
+  },
+  {
+    "titre": "\"L’intelligence artificielle dans les établissements scolaires\" _ Rapport IGESR",
+    "theme": "IA et éducation",
+    "format": "pdf",
+    "date": "2025-07-31",
+    "url": "files/laintelligence-artificielle-dans-les-atablissements-scolaires_f0ss5ju90db.pdf",
+    "vignette": "files/laintelligence-artificielle-dans-les-atablissements-scolaires_f0ss5ju90db.jpg",
+    "texte": "Nouveau rapport IGÉSR – Mai 2025\n\n \"L’intelligence artificielle dans les établissements scolaires : enjeux pédagogiques et administratifs\"\nComment les élèves, les enseignants et les cadres s’approprient-ils l’IA à l’école ?\n Quels usages réels ? Quels freins ? Quelles perspectives ?\n\n👉 Un état des lieux complet\n 👉 Des préconisations concrètes (formation, gouvernance, curriculum)\n 👉 Un appel à une stratégie claire et équitable sur tout le territoire\n📎 Rapport en ligne :https://lnkd.in/ez7wcKyp\n📎 Lien vers la synthèse en pdf : https://lnkd.in/e_KfiVKq\n\nA noter également, 2 FAQ proposées par la CNIL :\n👉 à destination des enseignants : https://lnkd.in/ex_-4d_E\n👉 à destination des \"perdir, ministère et autorités académiques : https://lnkd.in/e9stJwaR"
+  },
+  {
+    "titre": "Niveaux progressifs d'usage de l'IA",
+    "theme": "IA et éducation",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/niveaux-dausage-progressifs-de-laia-_-eleve_hk476ppvajq.pdf",
+    "vignette": "files/niveaux-dausage-progressifs-de-laia-_-eleve_hk476ppvajq.jpg"
+  },
+  {
+    "titre": "Promouvoir un usage raisonné du numérique à l’École – Circulaire MENE 25‑19904C (BO n° 28 du 10",
+    "theme": "BO & rapports IG",
+    "format": "pdf",
+    "date": "2025-07-31",
+    "url": "files/promouvoir-un-numarique-raisonna-a-laacole-mene2519904c_ttnfiq9bu5i.pdf",
+    "vignette": "files/promouvoir-un-numarique-raisonna-a-laacole-mene2519904c_ttnfiq9bu5i.jpg",
+    "texte": "🔍 https://lnkd.in/evi5fVYS\n\nLe ministère de l’Éducation nationale instaure une stratégie en 4 volets pour un numérique raisonné et équilibré à l’École :\n➡️ Formation à la citoyenneté numérique : éducation aux médias, lutte contre la désinformation, utilisation pédagogique de PIX, cadre d’exposition adapté dès la rentrée 2025.\n➡️ Suspension des mises à jour ENT & Pronote : nuit et week‑end, pour garantir un vrai droit à la déconnexion pour élèves, familles et enseignants .\n➡️ Généralisation de « Portable en pause » : dispositif basé sur l’article L. 511‑5 du Code de l’éducation, déployé dès 2025‑2026 dans tous les collèges. + Réflexion sur l’usage du smartphone et IA en lycée.\n➡️ Accompagnement des familles : ressources et dialogue renforcés dès la rentrée 2025, pilotés par les recteurs et les DASEN."
+  },
+  {
+    "titre": "Enseigner et apprendre en confiance et en sécurité : un enjeu essentiel pour la nation.",
+    "theme": "BO & rapports IG",
+    "format": "pdf",
+    "date": "2024-12-30",
+    "url": "files/bloc-note_t6am3wqa0dk.pdf",
+    "vignette": "files/bloc-note_t6am3wqa0dk.jpg",
+    "texte": "N° 23-24 004A – novembre 2024"
+  },
+  {
+    "titre": "Synthèse graphique",
+    "theme": "BO & rapports IG",
+    "format": "image",
+    "date": "2024-12-30",
+    "url": "files/rapport-ig--a-enseigner-et-apprendre-en-confiance-et-en-sacurita--un-enjeu-essentiel-pour-la-nation-_nc2gj5lwav.png",
+    "vignette": "files/rapport-ig--a-enseigner-et-apprendre-en-confiance-et-en-sacurita--un-enjeu-essentiel-pour-la-nation-_nc2gj5lwav.png"
+  },
+  {
+    "titre": "[Note de lecture BO] pilotage EPLE",
+    "theme": "BO & rapports IG",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/simplification-du-processus-et-des-instruments-de-pilotage-des-eple_frmrimkppmo.pdf",
+    "vignette": "files/simplification-du-processus-et-des-instruments-de-pilotage-des-eple_frmrimkppmo.jpg"
+  },
+  {
+    "titre": "[NOTE DE LECTURE BO] Sorties et voyages scolaires",
+    "theme": "BO & rapports IG",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/organisation-des-sorties-et-voyages-scolaires-dans-les-acoles-les-collages-et-les-lycaes-publics---_ou9zg6ld0ca.pdf",
+    "vignette": "files/organisation-des-sorties-et-voyages-scolaires-dans-les-acoles-les-collages-et-les-lycaes-publics---_ou9zg6ld0ca.jpg"
+  },
+  {
+    "titre": "« Compétences psychosociales : soutenir la promesse émancipatrice de l’École républicaine »",
+    "theme": "BO & rapports IG",
+    "format": "pdf",
+    "date": "2026-07-30",
+    "nouveau": true,
+    "url": "files/1773494782661_bimzp8sypsv.pdf",
+    "vignette": "files/1773494782661_bimzp8sypsv.jpg",
+    "texte": "Synthèse du rapport n° 24-25 108B de l’Inspection générale de l’éducation, du sport et de la recherche (IGÉSR), intitulé : « Compétences psychosociales : soutenir la promesse émancipatrice de l’École républicaine » / https://lnkd.in/eJj_SYvq (note de lecture via IA en pdf)\n\nLe développement des CPS s'affirme comme un levier stratégique pour l'égalité des chances et la réussite académique.\n\n❓ Pourquoi est-ce un sujet majeur pour notre système éducatif ?\nLe rapport clarifie une vision souvent floue en structurant les CPS autour de trois piliers fondamentaux (référentiel Santé publique France):\n+Cognitives : pensée critique, prise de décision, maîtrise de soi.\n+Émotionnelles : identification, compréhension et régulation des émotions et du stress.\n+Sociales : communication efficace, empathie, résolution de conflits et assertivité.\n\n👓 Ce qu'il faut retenir de la synthèse :\nUn impact scientifiquement prouvé : Des méta-analyses portant sur plus de 700 000 élèves démontrent qu'un travail sur les CPS améliore non seulement la santé mentale, mais aussi le climat scolaire et, directement, les performances académiques.\n\nUn changement de paradigme : Le rapport préconise de passer d'une « approche par injonction » (séances isolées) à une « intégration pédagogique totale ». Les CPS ne sont pas une matière supplémentaire, mais le socle sur lequel reposent les savoirs disciplinaires.\n\nUne éthique de l'évaluation : L'IGÉSR met en garde contre une évaluation normative (notes, jugements de valeur) et encourage une approche formative et l’auto-évaluation pour éviter toute stigmatisation.\n\nVers une systématisation institutionnelle\nLa feuille de route proposée est ambitieuse : intégration des CPS dans les concours de recrutement, formation continue obligatoire des personnels (EAFC/INSPÉ) et stabilisation d'un vocabulaire républicain axé sur l'émancipation plutôt que sur le simple développement personnel."
+  },
+  {
+    "titre": "Le Référentiel des Compétences du XXIe Siècle",
+    "theme": "CPS, C21 & soft skills",
+    "format": "outil",
+    "date": "2026-07-30",
+    "url": "https://competences21.netlify.app/",
+    "texte": "J'ai bricolé un outil, d'abord pour moi : pouvoir explorer ces compétences plus facilement, de manière dynamique et croisée, les relier par mots-clés, les comparer entre collège et lycée. Et de fil en aiguille est arrivé ce qui m'intéressait le plus — une frise de programmation. Rien de prescriptif : juste une trame pour réfléchir à quelle compétence travailler à quelle classe, et la voir se déployer sur les années… Bref, aider à structurer son PPO par exemple !\nAu fil des essais, ça s'est étoffé : une vue d'ensemble, un nuage de mots-clés, une sélection commune aux deux référentiels, la comparaison côte à côte, la frise, un export PDF pour imprimer.\nLes contenus viennent des documents officiels du programme Avenir(s).\n\nL'outil est autonome, sans dépendance.\nJe le mets en partage au cas où il rendrait service à d'autres — preneur de vos retours si vous l'essayez. C'est une version 1 😉"
+  },
+  {
+    "titre": "Bien-être à l’école : ce que nous apprend l’Irlande",
+    "theme": "CPS, C21 & soft skills",
+    "format": "linkedin",
+    "date": "2026-07-30",
+    "nouveau": true,
+    "url": "https://www.linkedin.com/pulse/bien-%C3%AAtre-%C3%A0-l%C3%A9cole-ce-que-nous-apprend-lirlande-damien-dubreuil-eqlke",
+    "texte": "Article Linkedin pour faire le point !"
+  },
+  {
+    "titre": "Les 4 domaines clés du bien-être",
+    "theme": "CPS, C21 & soft skills",
+    "format": "image",
+    "date": "2026-08-01",
+    "nouveau": true,
+    "url": "files/approche-a-acole-entiare-a--4-domaines-clas-du-bien-atre_zq6nyijwfsm.png",
+    "vignette": "files/approche-a-acole-entiare-a--4-domaines-clas-du-bien-atre_zq6nyijwfsm.png",
+    "texte": "Traduction française de l'infographie irlandaise"
+  },
+  {
+    "titre": "Soutien continu, les 3 niveaux d'appui",
+    "theme": "CPS, C21 & soft skills",
+    "format": "image",
+    "date": "2026-08-01",
+    "nouveau": true,
+    "url": "files/a-continuum-of-support-a--3-niveaux-daappui_uh6mz379ujb.png",
+    "vignette": "files/a-continuum-of-support-a--3-niveaux-daappui_uh6mz379ujb.png",
+    "texte": "Traduction française de l'infographie irlandaise"
+  },
+  {
+    "titre": "Le triangle des CPS",
+    "theme": "CPS, C21 & soft skills",
+    "format": "image",
+    "date": "2026-08-01",
+    "nouveau": true,
+    "url": "files/le-triangle-des-cps_irc7u5xdeu8.png",
+    "vignette": "files/le-triangle-des-cps_irc7u5xdeu8.png"
+  },
+  {
+    "titre": "CPS",
+    "theme": "CPS, C21 & soft skills",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/cps_ccjnqmxjpgg.pdf",
+    "vignette": "files/cps_ccjnqmxjpgg.jpg"
+  },
+  {
+    "titre": "CPS et C21",
+    "theme": "CPS, C21 & soft skills",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/compatences-du-xxie-siacle-et-cps_nj6luvy99q.pdf",
+    "vignette": "files/compatences-du-xxie-siacle-et-cps_nj6luvy99q.jpg"
+  },
+  {
+    "titre": "Parlons CPS",
+    "theme": "CPS, C21 & soft skills",
+    "format": "lien",
+    "date": "2024-12-29",
+    "url": "https://view.genially.com/645df96d1317b5001818301a/presentation-cps-en-questions",
+    "texte": "Un support un peu ancien pour une présentation ciblée. Pas d'expérentiel ici !"
+  },
+  {
+    "titre": "C21 ?",
+    "theme": "CPS, C21 & soft skills",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/petites-notes-_competences-xxi_c940ene97h.pdf",
+    "vignette": "files/petites-notes-_competences-xxi_c940ene97h.jpg"
+  },
+  {
+    "titre": "Intelligence émotionnelle",
+    "theme": "CPS, C21 & soft skills",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/petites-notes-_-intelligence-amotionnelle_n8ioiqf0yef.pdf",
+    "vignette": "files/petites-notes-_-intelligence-amotionnelle_n8ioiqf0yef.jpg"
+  },
+  {
+    "titre": "Soft skills ?",
+    "theme": "CPS, C21 & soft skills",
+    "format": "lien",
+    "date": "2024-12-29",
+    "url": "https://www.canva.com/design/DAEV18kD3YY/OR6JsYl0GoSy5ByMKpFh9g/view?utm_content=DAEV18kD3YY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h644b0704fe"
+  },
+  {
+    "titre": "[NOTE DE LECTURE] Le leadership du chef d’établissement _ ANTI-MANUEL DE PILOTAGE PEDAGOGIQUE",
+    "theme": "Notes de lecture",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/le-leadership-du-chef-daatablissementanti-manuel-de-pilotage-pedagogiqueromuald-normand_cydtqmhcsma.pdf",
+    "vignette": "files/le-leadership-du-chef-daatablissementanti-manuel-de-pilotage-pedagogiqueromuald-normand_cydtqmhcsma.jpg"
+  },
+  {
+    "titre": "[Note de lecture] Le leadership moteur",
+    "theme": "Notes de lecture",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/note-de-lecture-_le-leadership-moteur-_michael-fullan_ff42n508rmj.pdf",
+    "vignette": "files/note-de-lecture-_le-leadership-moteur-_michael-fullan_ff42n508rmj.jpg"
+  },
+  {
+    "titre": "[Note de lecture] Les soft skills pour innover et transformer",
+    "theme": "Notes de lecture",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/les-soft-skillspour-innover-et-transformerles-organisations_7xr37b68wq4.pdf",
+    "vignette": "files/les-soft-skillspour-innover-et-transformerles-organisations_7xr37b68wq4.jpg"
+  },
+  {
+    "titre": "La communication, un schéma",
+    "theme": "La communication",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/la-communication_ku5jrix4vzh.pdf",
+    "vignette": "files/la-communication_ku5jrix4vzh.jpg"
+  },
+  {
+    "titre": "Communication interne et externe",
+    "theme": "La communication",
+    "format": "pdf",
+    "date": "2024-12-29",
+    "url": "files/la-communication-interne-et-externe-en-atablissement-scolaire_vkov1cztl3d.pdf",
+    "vignette": "files/la-communication-interne-et-externe-en-atablissement-scolaire_vkov1cztl3d.jpg"
+  },
+  {
+    "titre": "Herold et Fedor",
+    "theme": "Le changement",
+    "format": "image",
+    "date": "2024-12-29",
+    "url": "files/le-changement-_crbxraymoga.png",
+    "vignette": "files/le-changement-_crbxraymoga.png"
+  },
+  {
+    "titre": "Kaizen Deming",
+    "theme": "Le changement",
+    "format": "image",
+    "date": "2024-12-29",
+    "url": "files/infographie-_-kaizen-deming_kw4bd68t36n.png",
+    "vignette": "files/infographie-_-kaizen-deming_kw4bd68t36n.png"
+  },
+  {
+    "titre": "SAMR",
+    "theme": "Le changement",
+    "format": "image",
+    "date": "2024-12-29",
+    "url": "files/2_vo1ss67580h.png",
+    "vignette": "files/2_vo1ss67580h.png"
+  },
+  {
+    "titre": "Changement et numérique",
+    "theme": "Le changement",
+    "format": "image",
+    "date": "2024-12-29",
+    "url": "files/1_l29kd2klkcp.png",
+    "vignette": "files/1_l29kd2klkcp.png"
+  },
+  {
+    "titre": "La personnalisation de son outil d'IAg",
+    "theme": "Y voir plus clair",
+    "format": "pdf",
+    "date": "2026-07-30",
+    "nouveau": true,
+    "url": "files/1760865824079_0eku1l399nor.pdf",
+    "vignette": "files/1760865824079_0eku1l399nor.jpg",
+    "texte": "L'objectif est de contrôler au mieux les réponses et leur expression, mais aussi de systématiser le cadre des échanges.\n\n(extrait) :\nFormat : réponses structurées, pédagogiques.\nTon : positif, constructif.\nDétail : juste ce qu’il faut pour comprendre et agir.\nSuggestions : idées concrètes pour améliorer contenus et méthodes.\nQuestions : ouvertes, pour stimuler réflexion et créativité.\nVérifications : adéquation public/objectif systématique.\nRéférences : recherches récentes, sources citées (auteur, date, lien), note de fiabilité 1–5.\nBiais : vigilance active (culturels, stéréotypes).\nMéthode : raisonnements explicités quand une donnée est discutable.\nPriorité : exactitude avant style.\nContrôle final : “Tout est-il factuel, sourcé, vérifiable ?” → sinon, corriger avant d’envoyer."
+  },
+  {
+    "titre": "La CUA",
+    "theme": "Y voir plus clair",
+    "format": "pdf",
+    "date": "2024-12-31",
+    "url": "files/hum-cua_82vn0gdkd3l.pdf",
+    "vignette": "files/hum-cua_82vn0gdkd3l.jpg"
+  },
+  {
+    "titre": "La discipline positive",
+    "theme": "Y voir plus clair",
+    "format": "pdf",
+    "date": "2024-12-31",
+    "url": "files/petites-notes-_-discipline-positive_zayygpdaycs.pdf",
+    "vignette": "files/petites-notes-_-discipline-positive_zayygpdaycs.jpg"
+  },
+  {
+    "titre": "LE GRAND ORAL",
+    "theme": "Ressources lycée",
+    "format": "pdf",
+    "date": "2026-07-30",
+    "nouveau": true,
+    "url": "files/memo-grand-oral_2szx6f30mgo.pdf",
+    "vignette": "files/memo-grand-oral_2szx6f30mgo.jpg",
+    "texte": "Mémo complet sur le Grand Oral pour la voie générale (session 2026) : durée, déroulé précis, rôle du jury, critères d’évaluation, particularités pour la spécialité LLCER, avec un focus clair sur ce qui attend réellement les élèves le jour J.\n\nObjectif : un document simple, rigoureux et conforme aux derniers textes officiels, que les élèves peuvent s’approprier facilement et que les équipes peuvent diffuser sans crainte d’erreur."
+  }
+]

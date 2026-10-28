@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mes ciels — Damien Dubreuil</title>
+<meta name="description" content="Synthèses, notes de lecture et outils de Damien Dubreuil, personnel de direction : IA et éducation, CPS, pilotage d'établissement, Parcoursup.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="scene" aria-hidden="true"></div>
+<div id="tooltip" role="presentation" hidden></div>
+
+<aside id="panel">
+  <header class="brand">
+    <h1><span class="star" aria-hidden="true">✦</span> Mes ciels</h1>
+    <p class="author"><span id="author"></span> <a id="linkedin-profile" hidden target="_blank" rel="noopener">LinkedIn ↗</a></p>
+    <p id="intro" class="intro"></p>
+  </header>
+
+  <div class="search">
+    <label for="q" class="sr-only">Rechercher</label>
+    <input id="q" type="search" autocomplete="off" placeholder="Chercher une idée, un mot, un auteur…">
+    <kbd aria-hidden="true">/</kbd>
+  </div>
+  <div id="active" class="active" aria-live="polite"></div>
+
+  <div class="tabs" role="tablist" aria-label="Explorer par">
+    <button role="tab" aria-selected="true" aria-controls="tab-themes" id="t-themes">Thèmes</button>
+    <button role="tab" aria-selected="false" aria-controls="tab-tags" id="t-tags">Mots-clés</button>
+    <button role="tab" aria-selected="false" aria-controls="tab-formats" id="t-formats">Formats</button>
+    <button role="tab" aria-selected="false" aria-controls="tab-recent" id="t-recent">Récents</button>
+  </div>
+  <section role="tabpanel" id="tab-themes" aria-labelledby="t-themes" class="tabpanel"></section>
+  <section role="tabpanel" id="tab-tags" aria-labelledby="t-tags" class="tabpanel cloud" hidden></section>
+  <section role="tabpanel" id="tab-formats" aria-labelledby="t-formats" class="tabpanel" hidden></section>
+  <section role="tabpanel" id="tab-recent" aria-labelledby="t-recent" class="tabpanel" hidden></section>
+
+  <section id="results" class="results" aria-live="polite"></section>
+</aside>
+
+<div class="top-actions"><button id="sky-toggle" class="view-toggle"></button><button id="view-toggle" class="view-toggle" aria-pressed="false">Vue liste</button></div>
+<main id="list-view" class="list-view" hidden aria-label="Ressources"></main>
+
+<article id="card" class="card" hidden aria-labelledby="card-title">
+  <button class="close" id="card-close" aria-label="Fermer la fiche">×</button>
+  <div id="card-body"></div>
+</article>
+
+<noscript><p class="noscript">Ce site a besoin de JavaScript pour afficher la constellation.</p></noscript>
+<script type="module" src="app.js"></script>
+</body>
+</html>

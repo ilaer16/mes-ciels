@@ -1,0 +1,19 @@
+{
+  "name": "mes-ciels",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "linkedin": "node scripts/import-linkedin.mjs",
+    "test": "node scripts/test.mjs",
+    "dev": "node scripts/serve.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "unpdf": "^0.12.1"
+  },
+  "private": true
+}
