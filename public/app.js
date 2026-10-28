@@ -1,22 +1,26 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { L, initialLang } from './i18n.js';
+
+let lang = initialLang();
+const t = (k, ...a) => { const v = L[lang][k] ?? L.fr[k]; return typeof v === 'function' ? v(...a) : v; };
 
 let mode = (() => { try { return localStorage.getItem('ciel'); } catch { return null; } })() || 'light';
 const SKY = { light: { bg: 0xeef2f8, star: 0x9aa6bd, hub: 0xb8c2d6, blend: 1, glow: 0.4 }, dark: { bg: 0x05070d, star: 0x9aa4bf, hub: 0x4b5470, blend: 2, glow: 1 } }; // blend: Normal / Additive
-const F = (label, dark, light, size, action) => ({ label, dark, light, size, action, get color() { return this[mode]; } });
+const F = (key, dark, light, size) => ({ dark, light, size, get color() { return this[mode]; }, get label() { return t('fmt_' + key); }, get action() { return t('act_' + key); } });
 const FORMATS = {
-  outil:    F('Outil web',          '#8ce99a', '#2b8a3e', 1.35, "Lancer l'outil"),
-  pdf:      F('PDF',                '#74c0fc', '#1971c2', 1,    'Lire / télécharger'),
-  image:    F('Infographie',        '#f783ac', '#c2255c', 0.95, 'Voir en grand'),
-  lien:     F('Lien, présentation', '#ffe066', '#e67700', 0.9,  'Ouvrir le lien'),
-  linkedin: F('Post LinkedIn',      '#b197fc', '#6741d9', 0.85, 'Voir le post'),
+  outil:    F('outil',    '#8ce99a', '#2b8a3e', 1.35),
+  pdf:      F('pdf',      '#74c0fc', '#1971c2', 1),
+  image:    F('image',    '#f783ac', '#c2255c', 0.95),
+  lien:     F('lien',     '#ffe066', '#e67700', 0.9),
+  linkedin: F('linkedin', '#b197fc', '#6741d9', 0.85),
 };
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const norm = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-const fmtDate = d => new Date(d).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+const fmtDate = (d, day) => new Date(d).toLocaleDateString(t('locale'), { ...(day && { day: 'numeric' }), month: 'long', year: 'numeric' });
 
 const data = await (await fetch('data.json')).json();
 const { items, themes, site } = data;
@@ -29,8 +33,6 @@ for (const it of items) {
 }
 
 $('#author').textContent = site.auteur;
-$('#intro').textContent = site.intro;
-$('#majour').textContent = 'Mis à jour le ' + new Date(site.majour).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 if (site.linkedin) Object.assign($('#linkedin-profile'), { href: site.linkedin, hidden: false });
 
 const state = { q: '', themes: new Set(), formats: new Set(), tags: new Set(), recent: false, selected: null, list: matchMedia('(max-width: 760px)').matches };
@@ -53,7 +55,7 @@ const filtering = () => !!(state.q.trim() || state.themes.size || state.formats.
 
 // Extrait autour du premier terme trouvé (norm conserve la longueur pour du texte précomposé)
 function snippet(it, words) {
-  for (const [field, label] of [['texte', ''], ['contenu', 'dans le document']]) {
+  for (const [field, label] of [['texte', ''], ['contenu', t('inDoc')]]) {
     const src = it[field]; if (!src) continue;
     const n = it.n[field];
     const hit = words.map(w => n.indexOf(w)).filter(i => i >= 0).sort((a, b) => a - b)[0];
@@ -169,7 +171,7 @@ function applySky() {
   hubLines = segments(items.map(it => [it.pos, centers.get(it.theme), new THREE.Color(it.f.color), new THREE.Color(s.hub)]), mode === 'light' ? 0.35 : 0.12);
   neighborLines = segments(neighborPairs.map(([a, b]) => [a.pos, b.pos, new THREE.Color(a.f.color), new THREE.Color(b.f.color)]), 0.22);
   scene.add(hubLines, neighborLines);
-  $('#sky-toggle').textContent = mode === 'light' ? '☾ Ciel de nuit' : '☀ Ciel clair';
+  $('#sky-toggle').textContent = t(mode === 'light' ? 'skyNight' : 'skyDay');
 }
 $('#sky-toggle').addEventListener('click', () => {
   mode = mode === 'light' ? 'dark' : 'light';
@@ -247,7 +249,7 @@ function row(it, words = []) {
   const sn = words.length ? snippet(it, words) : null;
   return `<button class="item-row" data-id="${it.id}">
     <span class="t"><span class="dot" style="color:${it.f.color}"></span><span>${highlight(it.titre, words)}</span></span>
-    <span class="m">${esc(it.theme)} · ${it.f.label} · ${fmtDate(it.date)} ${it.recent ? '<span class="badge-new">· récent</span>' : ''}</span>
+    <span class="m">${esc(it.theme)} · ${it.f.label} · ${fmtDate(it.date)} ${it.recent ? `<span class="badge-new">· ${t('recent')}</span>` : ''}</span>
     ${sn ? `<span class="s">${sn.label ? `<em>${sn.label} :</em> ` : ''}${sn.html}</span>` : ''}
   </button>`;
 }
@@ -263,8 +265,8 @@ function renderPanels(matched) {
   const w = new Map();
   for (const it of matched) for (const [m, s] of it.mots) { const k = norm(m); if (state.tags.has(k) || terms().includes(k)) continue; const e = w.get(k) || { m, s: 0, n: 0 }; e.s += s; e.n++; w.set(k, e); }
   const top = [...w.values()].sort((a, b) => b.s - a.s).slice(0, 45), max = top[0]?.s || 1;
-  $('#tab-tags').innerHTML = `<p class="hint">Calculé sur les ${matched.length} ressources affichées. Cliquez pour affiner.</p>` +
-    top.sort((a, b) => a.m.localeCompare(b.m, 'fr')).map(e => `<button data-tag="${esc(norm(e.m))}" title="${e.n} ressource${e.n > 1 ? 's' : ''}" style="font-size:${(0.78 + e.s / max * 0.9).toFixed(2)}rem;opacity:${(0.55 + e.s / max * 0.45).toFixed(2)}">${esc(e.m)}</button>`).join('');
+  $('#tab-tags').innerHTML = `<p class="hint">${t('tagsHint', matched.length)}</p>` +
+    top.sort((a, b) => a.m.localeCompare(b.m, 'fr')).map(e => `<button data-tag="${esc(norm(e.m))}" title="${t('nRes', e.n)}" style="font-size:${(0.78 + e.s / max * 0.9).toFixed(2)}rem;opacity:${(0.55 + e.s / max * 0.45).toFixed(2)}">${esc(e.m)}</button>`).join('');
 
   // Formats
   $('#tab-formats').innerHTML = `<div class="formats">` + Object.entries(FORMATS).filter(([k]) => items.some(i => i.format === k)).map(([k, f]) =>
@@ -272,13 +274,13 @@ function renderPanels(matched) {
 
   // Outils : accès direct aux sites en ligne
   const host = u => { try { return new URL(u).hostname.replace(/^www./, ''); } catch { return u; } };
-  $('#tab-tools').innerHTML = `<p class="hint">Mes outils en ligne, libres d'accès.</p>` + items.filter(i => i.format === 'outil').sort((a, b) => b.date.localeCompare(a.date))
+  $('#tab-tools').innerHTML = `<p class="hint">${t('toolsHint')}</p>` + items.filter(i => i.format === 'outil').sort((a, b) => b.date.localeCompare(a.date))
     .map(it => `<div class="tool-row"><button class="item-row" data-id="${it.id}"><span class="t"><span class="dot" style="color:${it.f.color}"></span><span>${esc(it.titre)}</span></span><span class="m">${esc(host(it.url))}</span></button>
-      <a class="btn primary small" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="Ouvrir ${esc(it.titre)}">Ouvrir ↗</a></div>`).join('');
+      <a class="btn primary small" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="${t('open')} ${esc(it.titre)}">${t('open')} ↗</a></div>`).join('');
 
   // Récents
   const recent = items.filter(i => i.recent).sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
-  $('#tab-recent').innerHTML = `<label class="switch"><input type="checkbox" id="only-recent" ${state.recent ? 'checked' : ''}> Ne montrer que les ajouts récents (anneau orange)</label>` + recent.map(i => row(i)).join('');
+  $('#tab-recent').innerHTML = `<label class="switch"><input type="checkbox" id="only-recent" ${state.recent ? 'checked' : ''}> ${t('onlyRecent')}</label>` + recent.map(i => row(i)).join('');
 }
 
 function renderActive() {
@@ -286,21 +288,20 @@ function renderActive() {
     ...[...state.themes].map(t => [`theme`, t, t]),
     ...[...state.formats].map(f => [`format`, f, FORMATS[f].label]),
     ...[...state.tags].map(t => [`tag`, t, '#' + t]),
-    ...(state.recent ? [['recent', '1', 'Récents']] : []),
+    ...(state.recent ? [['recent', '1', t('recentChip')]] : []),
   ];
-  $('#active').innerHTML = chips.map(([k, v, l]) => `<button class="chip" data-remove="${k}" data-v="${esc(v)}">${esc(l)} <span class="x" aria-label="retirer">×</span></button>`).join('') +
-    (chips.length ? `<button class="chip clear" data-remove="all">Tout effacer</button>` : '');
+  $('#active').innerHTML = chips.map(([k, v, l]) => `<button class="chip" data-remove="${k}" data-v="${esc(v)}">${esc(l)} <span class="x" aria-label="${t('remove')}">×</span></button>`).join('') +
+    (chips.length ? `<button class="chip clear" data-remove="all">${t('clearAll')}</button>` : '');
 }
 
 function renderResults(matched) {
   const words = [...terms(), ...state.tags];
   if (!filtering()) {
-    $('#results').innerHTML = `<p class="help"><b>${items.length} ressources</b> en ${themes.length} constellations. Survolez une étoile, cliquez pour ouvrir sa fiche. Les fils relient les ressources qui parlent des mêmes choses.</p>
-      <p class="help">La recherche fouille aussi <b>l'intérieur des PDF</b>. Essayez « harcèlement », « Fullan » ou « jury ».</p>`;
+    $('#results').innerHTML = `<p class="help">${t('help1', items.length, themes.length)}</p><p class="help">${t('help2')}</p>`;
     return;
   }
-  $('#results').innerHTML = `<p class="head">${matched.length} ressource${matched.length > 1 ? 's' : ''}</p>` +
-    (matched.length ? matched.slice(0, 60).map(i => row(i, words)).join('') : `<p class="help">Rien trouvé. Essayez un mot plus court ou retirez un filtre.</p>`);
+  $('#results').innerHTML = `<p class="head">${t('nRes', matched.length)}</p>` +
+    (matched.length ? matched.slice(0, 60).map(i => row(i, words)).join('') : `<p class="help">${t('nothing')}</p>`);
 }
 
 // Couverture générée pour les ressources sans image : une mini-constellation propre à chaque ressource
@@ -317,7 +318,7 @@ function cover(it) {
 function renderList(matched) {
   $('#list-view').innerHTML = matched.map(it => `<button class="tile" data-id="${it.id}">
     ${it.vignette ? `<img src="${esc(it.vignette)}" alt="" loading="lazy">` : cover(it)}
-    <span class="in"><span class="t">${esc(it.titre)}</span><span class="m"><span class="dot" style="color:${it.f.color};display:inline-block"></span> ${esc(it.theme)} · ${it.f.label}${it.recent ? ' · <span class="badge-new">récent</span>' : ''}</span></span>
+    <span class="in"><span class="t">${esc(it.titre)}</span><span class="m"><span class="dot" style="color:${it.f.color};display:inline-block"></span> ${esc(it.theme)} · ${it.f.label}${it.recent ? ` · <span class="badge-new">${t('recent')}</span>` : ''}</span></span>
   </button>`).join('');
 }
 
@@ -341,20 +342,20 @@ function select(it) {
   document.body.classList.add('card-open');
   const words = [...terms(), ...state.tags];
   const sn = words.length && !words.every(w => it.n.titre.includes(w)) ? snippet(it, words) : null;
-  const body = it.texte ? linkify(highlight(it.texte, words)) : it.contenu ? `<em>Extrait du document :</em> ${highlight(it.contenu.slice(0, 700), words)}…` : '';
+  const body = it.texte ? linkify(highlight(it.texte, words)) : it.contenu ? `<em>${t('excerpt')}</em> ${highlight(it.contenu.slice(0, 700), words)}…` : '';
   $('#card-body').innerHTML = `
     <div class="meta"><span class="chip"><span class="dot" style="color:${it.f.color}"></span>${it.f.label}</span>
-      <button class="chip" data-theme="${esc(it.theme)}">${esc(it.theme)}</button><span>${fmtDate(it.date)}</span>${it.recent ? '<span class="badge-new">récent</span>' : ''}</div>
+      <button class="chip" data-theme="${esc(it.theme)}">${esc(it.theme)}</button><span>${fmtDate(it.date)}</span>${it.recent ? `<span class="badge-new">${t('recent')}</span>` : ''}</div>
     <h2 id="card-title">${esc(it.titre)}</h2>
-    ${it.vignette ? `<a href="${esc(it.url)}" target="_blank" rel="noopener"><img class="thumb" src="${esc(it.vignette)}" alt="Aperçu : ${esc(it.titre)}"></a>` : ''}
+    ${it.vignette ? `<a href="${esc(it.url)}" target="_blank" rel="noopener"><img class="thumb" src="${esc(it.vignette)}" alt="${t('preview')} ${esc(it.titre)}"></a>` : ''}
     <div class="actions"><a class="btn primary" href="${esc(it.url)}" target="_blank" rel="noopener">${it.f.action} ↗</a>
-      ${it.linkedin && it.linkedin !== it.url ? `<a class="btn" href="${esc(it.linkedin)}" target="_blank" rel="noopener">Le post LinkedIn ↗</a>` : ''}
-      ${it.lienPartage ? `<a class="btn" href="${esc(it.lienPartage)}" target="_blank" rel="noopener">Lien partagé ↗</a>` : ''}
-      <button class="btn" id="share">Copier le lien</button></div>
-    ${sn?.label ? `<p class="found">Trouvé ${sn.label} : ${sn.html}</p>` : ''}
+      ${it.linkedin && it.linkedin !== it.url ? `<a class="btn" href="${esc(it.linkedin)}" target="_blank" rel="noopener">${t('linkedinPost')}</a>` : ''}
+      ${it.lienPartage ? `<a class="btn" href="${esc(it.lienPartage)}" target="_blank" rel="noopener">${t('sharedLink')}</a>` : ''}
+      <button class="btn" id="share">${t('copyLink')}</button></div>
+    ${sn?.label ? `<p class="found">${t('found')} ${sn.label} : ${sn.html}</p>` : ''}
     <div class="texte">${body}</div>
-    <h3>Mots-clés</h3><div class="tags">${it.mots.slice(0, 10).map(([m]) => `<button class="chip" data-tag="${esc(norm(m))}">${esc(m)}</button>`).join('')}</div>
-    ${it.voisins.length ? `<h3>Dans la même constellation</h3>${it.voisins.map(([id]) => row(items[id])).join('')}` : ''}`;
+    <h3>${t('keywords')}</h3><div class="tags">${it.mots.slice(0, 10).map(([m]) => `<button class="chip" data-tag="${esc(norm(m))}">${esc(m)}</button>`).join('')}</div>
+    ${it.voisins.length ? `<h3>${t('neighbours')}</h3>${it.voisins.map(([id]) => row(items[id])).join('')}` : ''}`;
   $('#card').hidden = false;
   $('#card').scrollTop = 0;
   if (location.hash !== '#' + it.cle) history.pushState(null, '', '#' + it.cle); // le bouton Retour referme la fiche
@@ -388,7 +389,7 @@ document.addEventListener('click', e => {
     else ({ theme: state.themes, format: state.formats, tag: state.tags })[k].delete(v);
     return update({ reframe: true });
   }
-  if (b.id === 'share') { navigator.clipboard?.writeText(location.href); b.textContent = 'Lien copié ✓'; }
+  if (b.id === 'share') { navigator.clipboard?.writeText(location.href); b.textContent = t('copied'); }
 });
 document.addEventListener('change', e => { if (e.target.id === 'only-recent') { state.recent = e.target.checked; update({ reframe: true }); } });
 $('#card-close').addEventListener('click', closeCard);
@@ -403,7 +404,7 @@ document.querySelectorAll('[role=tab]').forEach(tab => tab.addEventListener('cli
 function setList(on) {
   state.list = on;
   $('#list-view').hidden = !on;
-  $('#view-toggle').textContent = on ? 'Vue constellation' : 'Vue liste';
+  $('#view-toggle').textContent = t(on ? 'skyView' : 'listView');
   $('#view-toggle').setAttribute('aria-pressed', on);
 }
 $('#view-toggle').addEventListener('click', () => setList(!state.list));
@@ -422,7 +423,6 @@ $('#home').addEventListener('click', home);
 
 // À propos
 const about = $('#about');
-$('#about-stats').textContent = `${items.length} ressources · ${themes.length} constellations · ${items.filter(i => i.contenu).length} documents lus en entier · ${$('#majour').textContent.toLowerCase()}`;
 $('#about-open').addEventListener('click', () => {
   $('#about-legend').innerHTML = Object.values(FORMATS).map(f => `<li><span class="dot" style="color:${f.color}"></span>${f.label}</li>`).join('');
   about.showModal();
@@ -435,6 +435,26 @@ addEventListener('keydown', e => {
   if (e.key === 'Escape') closeCard();
 });
 
+// Langue de l'interface : textes fixes (attributs data-i18n*) puis tout ce qui est généré
+function applyLang() {
+  document.documentElement.lang = lang;
+  for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
+  for (const el of document.querySelectorAll('[data-i18n-html]')) el.innerHTML = t(el.dataset.i18nHtml);
+  for (const el of document.querySelectorAll('[data-i18n-title]')) el.title = t(el.dataset.i18nTitle);
+  for (const el of document.querySelectorAll('[data-i18n-placeholder]')) el.placeholder = t(el.dataset.i18nPlaceholder);
+  for (const el of document.querySelectorAll('[data-i18n-aria-label]')) el.setAttribute('aria-label', t(el.dataset.i18nAriaLabel));
+  $('#intro').textContent = L[lang].intro || site.intro;
+  $('#majour').textContent = t('updated', fmtDate(site.majour, true));
+  $('#about-stats').textContent = t('stats', items.length, themes.length, items.filter(i => i.contenu).length, fmtDate(site.majour, true));
+}
+$('#lang-toggle').addEventListener('click', () => {
+  lang = lang === 'fr' ? 'en' : 'fr';
+  try { localStorage.setItem('lang', lang); } catch {}
+  const u = new URL(location.href); u.searchParams.delete('lang'); history.replaceState(null, '', u);
+  applyLang(); applySky(); update(); setList(state.list); if (state.selected) select(state.selected);
+});
+
+applyLang();
 applySky();
 update();
 setList(state.list);

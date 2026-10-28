@@ -29,3 +29,6 @@ Champs d'une ressource : `titre`, `theme` (facultatif : automatique), `format` (
 
 ## En local
 `npm ci`, `npm run build`, `npm run dev` (http://localhost:8090), `npm test`.
+
+## Langues
+Interface en français et en anglais (bouton FR/EN, ou `?lang=en` dans l'adresse). Les textes sont dans `public/i18n.js` ; les ressources restent en français.

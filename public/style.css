@@ -157,7 +157,7 @@ mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 1
 .card .found { font-size: 12.5px; color: var(--muted); border-left: 2px solid var(--new); padding-left: 10px; margin: 10px 0; }
 
 /* Vue liste */
-.top-actions { position: fixed; z-index: 15; top: 16px; right: 16px; display: flex; gap: 8px; }
+.top-actions { position: fixed; z-index: 15; top: 16px; right: 16px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; max-width: calc(100vw - 32px); }
 .view-toggle { padding: 8px 14px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel); backdrop-filter: blur(10px); }
 body.card-open .top-actions { display: none; }
 .list-view { position: fixed; z-index: 5; inset: 0; overflow: auto; padding: 70px 24px 24px 400px; background: var(--bg); display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; align-content: start; }
