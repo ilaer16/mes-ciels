@@ -1,45 +1,31 @@
 # Mes ciels — constellations de ressources
 
-Site statique (Three.js, sans framework). Une seule source de vérité : **`resources.json`**.
+Site statique (Three.js, sans framework), en ligne sur https://mesciels.netlify.app/.
+Netlify reconstruit le site à chaque modification du dépôt GitHub `ilaer16/mes-ciels`.
 
+## Ajouter une ressource : https://mesciels.netlify.app/ajouter/
+1. **Première fois sur un appareil** : créer une clé GitHub (lien sur la page) avec l'accès au seul dépôt *mes-ciels* et la permission *Contents : Read and write*, puis la coller et cliquer sur « Enregistrer ». Elle reste dans ce navigateur.
+2. **Glisser un fichier** (PDF, image…) **ou coller un lien** (outil, présentation, article, post LinkedIn).
+3. Titre, thème (« Automatique » : rangé dans la constellation la plus proche du contenu), présentation (ton commentaire, le texte du post…), lien du post LinkedIn associé (facultatif).
+4. **Publier.** Le site est à jour environ 2 minutes plus tard. Pour un PDF, la vignette est générée automatiquement à partir de la première page.
+
+## Posts LinkedIn
+LinkedIn ne permet pas de lire automatiquement les posts d'un profil personnel. On passe donc par l'export officiel :
+1. LinkedIn → Vous → Préférences et confidentialité → Confidentialité des données → **Obtenir une copie de vos données** → cocher les publications (« Posts » / « Partages »).
+2. Dans le .zip reçu par e-mail, glisser **`Shares.csv`** sur la page `/ajouter/`, puis cliquer sur « Mettre à jour les posts LinkedIn ».
+3. À la reconstruction, chaque nouveau post devient une étoile violette, rangée par thème automatiquement. Un post qui présente une ressource déjà en ligne y est rattaché (bouton « Le post LinkedIn »). Les reposts et les posts de moins de 200 caractères sont ignorés.
+
+Pour **imposer un thème** à un post, ajoute-le à `resources.json` avec son lien (`url`) et le `theme` voulu : l'entrée de `resources.json` prime sur l'export.
+
+## Fichiers
 ```
-resources.json         ← la liste des ressources (à modifier)
+resources.json         ← la liste des ressources (modifiable à la main sur github.com)
+linkedin/Shares.csv    ← dernier export LinkedIn
 public/files/          ← PDF et images
-public/index.html, app.js, style.css
-scripts/build.mjs      ← extrait le texte des PDF, calcule mots-clés et liens -> public/data.json
-scripts/import-linkedin.mjs
+public/ajouter/        ← la page d'ajout
+scripts/build.mjs      ← texte des PDF, posts LinkedIn, thèmes auto, mots-clés, liens -> public/data.json
 ```
+Champs d'une ressource : `titre`, `theme` (facultatif : automatique), `format` (`outil`, `pdf`, `image`, `lien`, `linkedin`), `date`, `url`, `vignette`, `texte`, `linkedin`, `nouveau` (anneau orange forcé ; sinon automatique pendant 120 jours).
 
-## Ajouter une ressource
-1. Déposer le fichier dans `public/files/` (si c'est un PDF ou une image).
-2. Ajouter une entrée **à la fin** de `resources.json` :
-   ```json
-   { "titre": "…", "theme": "IA et éducation", "format": "pdf", "date": "2026-11-02",
-     "url": "files/mon-fichier.pdf", "vignette": "files/mon-fichier.jpg", "texte": "Présentation, post LinkedIn…" }
-   ```
-   - `format` : `outil`, `pdf`, `image`, `lien` ou `linkedin` (couleur de l'étoile).
-   - `theme` : un thème existant, ou un nouveau, qui crée une nouvelle constellation.
-   - `nouveau: true` force l'anneau orange. Sinon, l'anneau apparaît automatiquement pendant 120 jours.
-   - `linkedin` : lien vers le post LinkedIn qui présente la ressource (facultatif).
-3. `npm run build` puis `npm run dev` pour vérifier sur http://localhost:8080.
-
-Ajoute toujours à la fin : le lien de partage d'une fiche (`#r12`) est sa position dans la liste.
-
-## Importer ses posts LinkedIn
-LinkedIn ne permet pas de lire automatiquement les posts d'un profil personnel. Le circuit passe donc par l'export officiel :
-1. LinkedIn → Préférences → Confidentialité des données → **Obtenir une copie de vos données** → cocher « Posts » (fichier `Shares.csv`, reçu par e-mail en quelques minutes).
-2. `npm run build` (une fois, pour que le classement profite du texte des PDF), puis :
-   ```
-   npm run linkedin -- chemin/vers/Shares.csv
-   ```
-   - Les nouveaux posts sont ajoutés avec un thème choisi automatiquement (marqués `"themeAuto": true` : à relire).
-   - Un post qui présente une ressource déjà en ligne y est rattaché (bouton « Le post LinkedIn »).
-   - Les reposts et les posts de moins de 200 caractères sont ignorés. On peut relancer l'import : rien n'est ajouté en double.
-3. `npm run build`.
-
-## Mettre en ligne sur Netlify
-- **Avec GitHub (conseillé)** : pousser ce dossier sur un dépôt, puis Netlify → Add new site → Import from Git. `netlify.toml` règle tout (build `npm run build`, dossier `public`). Ensuite, chaque modification de `resources.json` sur github.com redéploie le site.
-- **Sans GitHub** : `npm run build`, puis glisser le dossier `public/` sur https://app.netlify.com/drop.
-
-## Vérifier
-`npm test` (lecture CSV, classement par thème).
+## En local
+`npm ci`, `npm run build`, `npm run dev` (http://localhost:8090), `npm test`.

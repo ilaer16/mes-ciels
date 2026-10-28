@@ -4,7 +4,6 @@
   "description": "",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "linkedin": "node scripts/import-linkedin.mjs",
     "test": "node scripts/test.mjs",
     "dev": "node scripts/serve.mjs"
   },

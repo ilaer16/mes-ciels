@@ -340,7 +340,7 @@ function select(it) {
     ${it.voisins.length ? `<h3>Dans la même constellation</h3>${it.voisins.map(([id]) => row(items[id])).join('')}` : ''}`;
   $('#card').hidden = false;
   $('#card').scrollTop = 0;
-  history.replaceState(null, '', '#r' + it.id);
+  history.replaceState(null, '', '#' + it.cle);
   scene.remove(focusLines);
   focusLines = segments(it.voisins.map(([id]) => [it.pos, items[id].pos, new THREE.Color(it.f.color), new THREE.Color(items[id].f.color)]), 0.9);
   scene.add(focusLines);
@@ -399,5 +399,5 @@ addEventListener('keydown', e => {
 applySky();
 update();
 setList(state.list);
-const fromHash = location.hash.match(/^#r(\d+)$/);
-if (fromHash && items[+fromHash[1]]) select(items[+fromHash[1]]);
+const fromHash = items.find(i => '#' + i.cle === location.hash);
+if (fromHash) select(fromHash);

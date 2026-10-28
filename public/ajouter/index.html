@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ajouter — Mes ciels</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<style>
+  html, body { overflow: auto; }
+  main { max-width: 640px; margin: 0 auto; padding: 32px 16px 64px; display: grid; gap: 18px; }
+  h1 { font-size: 28px; } h1 .star { color: var(--new); }
+  .back { color: var(--muted); text-decoration: none; font-size: 13px; }
+  .box { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 12px; }
+  label { display: grid; gap: 4px; font-weight: 500; font-size: 13.5px; }
+  label small, .hint { color: var(--muted); font-weight: 400; font-size: 12.5px; }
+  input[type=text], input[type=url], input[type=password], select, textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--bg); color: var(--text); font: inherit; }
+  textarea { min-height: 140px; resize: vertical; }
+  .drop { border: 2px dashed var(--line-strong); border-radius: 14px; padding: 34px 16px; text-align: center; cursor: pointer; transition: background .15s, border-color .15s; }
+  .drop.over { background: var(--soft2); border-color: var(--focus); }
+  .drop b { display: block; font-size: 16px; margin-bottom: 4px; }
+  .file { display: flex; gap: 12px; align-items: center; }
+  .file img { width: 64px; height: 84px; object-fit: cover; object-position: top; border-radius: 6px; border: 1px solid var(--line); background: #fff; }
+  .or { text-align: center; color: var(--muted); font-size: 12.5px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .check { display: flex; gap: 8px; align-items: center; font-weight: 400; }
+  .status { padding: 12px 14px; border-radius: 10px; background: var(--soft2); }
+  .status.err { background: rgba(224, 49, 49, .12); color: #c92a2a; }
+  .status.ok { background: rgba(43, 138, 62, .12); }
+  button.btn { cursor: pointer; }
+  button.btn:disabled { opacity: .5; cursor: wait; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="/">← Retour à Mes ciels</a>
+  <h1><span class="star" aria-hidden="true">✦</span> Ajouter une étoile</h1>
+
+  <section id="key-box" class="box">
+    <strong>Première fois sur cet appareil : la clé GitHub</strong>
+    <p class="hint">Elle permet à cette page d'écrire dans ton dépôt <code>ilaer16/mes-ciels</code>. Elle reste dans ce navigateur, nulle part ailleurs.
+      <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Créer la clé sur GitHub ↗</a>
+      : « Repository access » → <em>Only select repositories</em> → mes-ciels ; « Permissions » → <em>Contents : Read and write</em>.</p>
+    <div class="row"><input id="key" type="password" autocomplete="off" placeholder="github_pat_…" style="flex:1"><button class="btn primary" id="save-key">Enregistrer</button></div>
+  </section>
+  <p id="key-ok" class="hint" hidden>Clé enregistrée sur cet appareil ✓ · <a href="#" id="forget-key">l'oublier</a></p>
+
+  <form id="form" class="box" novalidate>
+    <div id="drop" class="drop" tabindex="0" role="button" aria-label="Choisir un fichier">
+      <b>Glisse un fichier ici</b>
+      <span class="hint">PDF, image… ou <code>Shares.csv</code> de l'export LinkedIn · ou clique pour choisir</span>
+      <input id="file" type="file" hidden>
+    </div>
+    <div id="file-info" class="file" hidden></div>
+    <p class="or" id="or">— ou —</p>
+    <label id="url-label">Un lien (outil, présentation, article…)
+      <input id="url" type="url" placeholder="https://…"></label>
+    <label id="outil-label" class="check" hidden><input type="checkbox" id="outil"> C'est un outil que j'ai créé (étoile verte)</label>
+
+    <div id="fields" class="grid" style="display:grid;gap:12px">
+      <label>Titre <input id="titre" type="text" required></label>
+      <label>Thème <small>« Automatique » range l'étoile dans la constellation la plus proche de son contenu.</small>
+        <select id="theme"><option value="">Automatique</option></select></label>
+      <label id="new-theme-label" hidden>Nom du nouveau thème <input id="new-theme" type="text"></label>
+      <label>Présentation <small>Ton commentaire, ou le texte du post LinkedIn. Il est cherchable sur le site.</small>
+        <textarea id="texte"></textarea></label>
+      <label>Post LinkedIn associé <small>(facultatif)</small> <input id="linkedin" type="url" placeholder="https://www.linkedin.com/feed/update/…"></label>
+    </div>
+    <button class="btn primary" id="publish" type="submit">Publier</button>
+    <div id="status" class="status" hidden role="status"></div>
+  </form>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const REPO = 'https://api.github.com/repos/ilaer16/mes-ciels';
+const $ = s => document.querySelector(s);
+const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} } };
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// --- Clé GitHub
+function showKey() { const has = !!store.get('gh-key'); $('#key-box').hidden = has; $('#key-ok').hidden = !has; }
+$('#save-key').onclick = () => { const k = $('#key').value.trim(); if (k) { store.set('gh-key', k); $('#key').value = ''; showKey(); } };
+$('#forget-key').onclick = e => { e.preventDefault(); store.set('gh-key', null); showKey(); };
+showKey();
+
+// --- Thèmes existants
+fetch('/data.json').then(r => r.json()).then(d => {
+  $('#theme').insertAdjacentHTML('beforeend', d.themes.map(t => `<option>${t.replace(/</g, '&lt;')}</option>`).join('') + '<option value="__new">+ Nouveau thème…</option>');
+});
+$('#theme').onchange = () => { $('#new-theme-label').hidden = $('#theme').value !== '__new'; };
+
+// --- Fichier : glisser-déposer ou choisir
+let picked = null; // { file, kind: 'pdf'|'image'|'doc'|'csv', thumb: Blob|null }
+const drop = $('#drop');
+drop.onclick = () => $('#file').click();
+drop.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#file').click(); } };
+['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => e.dataTransfer.files[0] && pick(e.dataTransfer.files[0]));
+$('#file').onchange = e => e.target.files[0] && pick(e.target.files[0]);
+
+async function pick(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  const kind = ext === 'csv' ? 'csv' : ext === 'pdf' ? 'pdf' : file.type.startsWith('image/') ? 'image' : 'doc';
+  picked = { file, kind, thumb: null };
+  const csv = kind === 'csv';
+  $('#fields').hidden = csv; $('#or').hidden = $('#url-label').hidden = $('#outil-label').hidden = true;
+  $('#url').value = '';
+  $('#publish').textContent = csv ? 'Mettre à jour les posts LinkedIn' : 'Publier';
+  if (!csv && !$('#titre').value) $('#titre').value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim();
+  if (kind === 'pdf') picked.thumb = await pdfThumb(file).catch(() => null);
+  const preview = picked.thumb ? URL.createObjectURL(picked.thumb) : kind === 'image' ? URL.createObjectURL(file) : '';
+  $('#file-info').innerHTML = `${preview ? `<img src="${preview}" alt="">` : ''}<div><strong></strong><br><span class="hint">${(file.size / 1e6).toFixed(1)} Mo${csv ? ' · export LinkedIn : les nouveaux posts seront ajoutés et rangés automatiquement' : ''}</span><br><a href="#" id="unpick" class="hint">retirer</a></div>`;
+  $('#file-info strong').textContent = file.name;
+  $('#file-info').hidden = false;
+  $('#unpick').onclick = e => { e.preventDefault(); picked = null; $('#file').value = ''; $('#file-info').hidden = true; for (const id of ['#fields', '#or', '#url-label']) $(id).hidden = false; $('#publish').textContent = 'Publier'; };
+}
+
+async function pdfThumb(file) {
+  const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const page = await pdf.getPage(1), v = page.getViewport({ scale: 1 });
+  const vp = page.getViewport({ scale: 700 / v.width }), c = document.createElement('canvas');
+  c.width = vp.width; c.height = vp.height;
+  await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+  return new Promise(r => c.toBlob(r, 'image/jpeg', 0.82));
+}
+
+$('#url').oninput = () => { const u = $('#url').value; $('#outil-label').hidden = !/^https?:\/\//.test(u) || /linkedin\.com/.test(u); };
+
+// --- GitHub : un seul commit pour le fichier, sa vignette et resources.json
+async function gh(path, opts = {}) {
+  const r = await fetch(REPO + path, { ...opts, headers: { Authorization: 'Bearer ' + store.get('gh-key'), Accept: 'application/vnd.github+json', ...opts.headers } });
+  if (r.status === 401 || r.status === 403) throw new Error("GitHub refuse la clé (expirée, ou sans le droit « Contents : Read and write » sur mes-ciels). Clique sur « l'oublier » et enregistre une nouvelle clé.");
+  if (!r.ok) throw new Error(`GitHub a répondu ${r.status} : ${(await r.text()).slice(0, 200)}`);
+  return opts.raw ? r.text() : r.json();
+}
+const b64 = blob => new Promise((ok, ko) => { const fr = new FileReader(); fr.onload = () => ok(fr.result.split(',')[1]); fr.onerror = ko; fr.readAsDataURL(blob); });
+const post = (path, body) => gh(path, { method: 'POST', body: JSON.stringify(body) });
+
+async function commit(files, message) {
+  const ref = await gh('/git/ref/heads/main'), base = await gh('/git/commits/' + ref.object.sha);
+  const tree = [];
+  for (const f of files) {
+    if (f.blob) { say(`Envoi de ${f.path.split('/').pop()}…`); const { sha } = await post('/git/blobs', { content: await b64(f.blob), encoding: 'base64' }); tree.push({ path: f.path, mode: '100644', type: 'blob', sha }); }
+    else tree.push({ path: f.path, mode: '100644', type: 'blob', content: f.content });
+  }
+  const t = await post('/git/trees', { base_tree: base.tree.sha, tree });
+  const c = await post('/git/commits', { message, tree: t.sha, parents: [ref.object.sha] });
+  await gh('/git/refs/heads/main', { method: 'PATCH', body: JSON.stringify({ sha: c.sha }) });
+}
+
+const slug = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'fichier';
+const isUrl = s => { try { return /^https?:$/.test(new URL(s).protocol); } catch { return false; } };
+function say(msg, cls = '') { const s = $('#status'); s.hidden = false; s.className = 'status ' + cls; s.innerHTML = msg; }
+
+$('#form').onsubmit = async e => {
+  e.preventDefault();
+  if (!store.get('gh-key')) return say("Enregistre d'abord ta clé GitHub (en haut).", 'err');
+  const btn = $('#publish'); btn.disabled = true;
+  try {
+    if (picked?.kind === 'csv') {
+      await commit([{ path: 'linkedin/Shares.csv', blob: picked.file }], 'Mise à jour des posts LinkedIn');
+      return done('Export LinkedIn envoyé. Les nouveaux posts apparaîtront dans environ 2 minutes.');
+    }
+    const titre = $('#titre').value.trim(), url = $('#url').value.trim(), li = $('#linkedin').value.trim();
+    let theme = $('#theme').value; if (theme === '__new') theme = $('#new-theme').value.trim();
+    if (!picked && !url) throw new Error('Glisse un fichier ou colle un lien.');
+    if (!picked && !isUrl(url)) throw new Error("Le lien doit commencer par https://");
+    if (li && !isUrl(li)) throw new Error("Le lien du post LinkedIn n'est pas valide.");
+    if (!titre) throw new Error('Il manque un titre.');
+    if ($('#theme').value === '__new' && !theme) throw new Error('Donne un nom au nouveau thème.');
+
+    say('Lecture de la liste des ressources…');
+    const resources = JSON.parse(await gh('/contents/resources.json?ref=main', { raw: true, headers: { Accept: 'application/vnd.github.raw+json' } }));
+    const files = [], entry = { titre, theme: theme || undefined, format: '', date: new Date().toISOString().slice(0, 10), url: '' };
+    if (picked) {
+      const name = `${slug(picked.file.name.replace(/\.[^.]+$/, ''))}-${Date.now().toString(36)}`, ext = picked.file.name.split('.').pop().toLowerCase();
+      entry.url = `files/${name}.${ext}`;
+      entry.format = picked.kind === 'pdf' ? 'pdf' : picked.kind === 'image' ? 'image' : 'lien';
+      files.push({ path: 'public/' + entry.url, blob: picked.file });
+      if (picked.kind === 'image') entry.vignette = entry.url;
+      if (picked.thumb) { entry.vignette = `files/${name}.jpg`; files.push({ path: 'public/' + entry.vignette, blob: picked.thumb }); }
+    } else {
+      entry.url = url;
+      entry.format = /linkedin\.com/.test(url) ? 'linkedin' : $('#outil').checked ? 'outil' : 'lien';
+    }
+    if (resources.some(r => r.url === entry.url)) throw new Error('Ce lien est déjà dans Mes ciels.');
+    entry.texte = $('#texte').value.trim() || undefined;
+    entry.linkedin = li || undefined;
+    resources.push(entry);
+    files.push({ path: 'resources.json', content: JSON.stringify(resources, null, 2) + '\n' });
+    await commit(files, `Ajout : ${titre}`);
+    done(`« ${titre.replace(/</g, '&lt;')} » est publié. Il apparaîtra sur <a href="/">Mes ciels</a> dans environ 2 minutes, le temps que Netlify reconstruise le site.`);
+  } catch (err) { say(err.message.replace(/</g, '&lt;'), 'err'); }
+  finally { btn.disabled = false; }
+};
+function done(msg) {
+  say(msg, 'ok');
+  picked = null; $('#form').reset(); $('#file-info').hidden = true; $('#new-theme-label').hidden = true; $('#outil-label').hidden = true;
+  for (const id of ['#fields', '#or', '#url-label']) $(id).hidden = false; $('#publish').textContent = 'Publier';
+}
+</script>
+</body>
+</html>
