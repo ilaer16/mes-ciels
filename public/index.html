@@ -19,12 +19,7 @@
 <aside id="panel">
   <header class="brand">
     <a href="/" id="home-link" class="wordmark" title="Retour à la vue d'ensemble">
-      <svg class="logo" viewBox="0 0 64 40" aria-hidden="true">
-        <polyline class="logo-line" points="6,31 18,9 32,23 46,7 58,29" pathLength="1"/>
-        <circle class="logo-star" cx="6" cy="31" r="2.4"/><circle class="logo-star" cx="18" cy="9" r="2.9"/>
-        <circle class="logo-glow" cx="32" cy="23" r="7"/><circle class="logo-star accent" cx="32" cy="23" r="3.6"/>
-        <circle class="logo-star" cx="46" cy="7" r="2.6"/><circle class="logo-star" cx="58" cy="29" r="2.2"/>
-      </svg>
+      <svg class="logo" id="logo" viewBox="0 0 64 40" aria-hidden="true"></svg>
       <h1>Mes ciels</h1>
     </a>
     <p class="tagline">Synthèses, notes de lecture &amp; outils, constellés</p>
@@ -85,6 +80,7 @@
 </dialog>
 
 <noscript><p class="noscript">Ce site a besoin de JavaScript pour afficher la constellation.</p></noscript>
+<script type="module" src="logo.js"></script>
 <script type="module" src="app.js"></script>
 </body>
 </html>
