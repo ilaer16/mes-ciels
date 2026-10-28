@@ -2,3 +2,5 @@ node_modules/
 public/data.json
 .claude/
 brand/banner.html
+brand/*.mp4
+brand/*.webm
