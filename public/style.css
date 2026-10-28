@@ -164,10 +164,13 @@ body.card-open .top-actions { display: none; }
 .tile { text-align: left; border: 1px solid var(--line); background: var(--panel-solid); border-radius: 12px; padding: 0; display: flex; flex-direction: column; }
 .tile:hover { border-color: var(--line-strong); }
 .tile img { width: 100%; height: 130px; border-radius: 11px 11px 0 0; object-fit: cover; object-position: top; background: #fff; }
-.tile .ph { height: 6px; }
+.tile .cover { display: block; width: 100%; height: 130px; border-radius: 11px 11px 0 0; background: linear-gradient(135deg, color-mix(in srgb, var(--c) 20%, var(--panel-solid)), var(--panel-solid) 85%); }
+.cover polyline { fill: none; stroke: var(--c); stroke-opacity: .5; stroke-width: 1.4; stroke-linejoin: round; }
+.cover circle { fill: var(--c); } .cover circle.g { opacity: .18; } .cover circle.d { fill: var(--muted); opacity: .35; }
+.cover text { font: 600 10.5px "Space Grotesk", sans-serif; letter-spacing: .12em; fill: var(--c); }
 .tile .in { padding: 12px; }
-.tile .t { font-weight: 600; }
-.tile .m { color: var(--muted); font-size: 12px; margin-top: 4px; }
+.tile .t { display: block; font-weight: 600; }
+.tile .m { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
 
 .noscript { position: fixed; inset: 0; display: grid; place-items: center; }
 

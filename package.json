@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node scripts/test.mjs",
-    "dev": "node scripts/serve.mjs"
+    "dev": "node scripts/serve.mjs",
+    "captures": "node scripts/captures.mjs"
   },
   "keywords": [],
   "author": "",

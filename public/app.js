@@ -304,9 +304,20 @@ function renderResults(matched) {
     (matched.length ? matched.slice(0, 60).map(i => row(i, words)).join('') : `<p class="help">Rien trouvé. Essayez un mot plus court ou retirez un filtre.</p>`);
 }
 
+// Couverture générée pour les ressources sans image : une mini-constellation propre à chaque ressource
+function cover(it) {
+  const r = rng(parseInt(it.cle, 16)), n = 5 + Math.floor(r() * 3);
+  const pts = Array.from({ length: n }, () => [22 + r() * 196, 16 + r() * 84]).sort((a, b) => a[0] - b[0]), big = Math.floor(r() * n);
+  const dust = Array.from({ length: 14 }, () => `<circle class="d" cx="${(r() * 240).toFixed(0)}" cy="${(r() * 130).toFixed(0)}" r="${(r() + .4).toFixed(1)}"/>`).join('');
+  return `<svg class="cover" viewBox="0 0 240 130" style="--c:${it.f.color}" aria-hidden="true">${dust}
+    <polyline points="${pts.map(p => p.map(v => v.toFixed(0)).join(',')).join(' ')}"/>
+    ${pts.map(([x, y], i) => (i === big ? `<circle class="g" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="11"/>` : '') + `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${i === big ? 4.5 : 2.6}"/>`).join('')}
+    <text x="14" y="120">${esc(it.f.label.toUpperCase())}</text></svg>`;
+}
+
 function renderList(matched) {
   $('#list-view').innerHTML = matched.map(it => `<button class="tile" data-id="${it.id}">
-    ${it.vignette ? `<img src="${esc(it.vignette)}" alt="" loading="lazy">` : `<span class="ph" style="background:${it.f.color}"></span>`}
+    ${it.vignette ? `<img src="${esc(it.vignette)}" alt="" loading="lazy">` : cover(it)}
     <span class="in"><span class="t">${esc(it.titre)}</span><span class="m"><span class="dot" style="color:${it.f.color};display:inline-block"></span> ${esc(it.theme)} · ${it.f.label}${it.recent ? ' · <span class="badge-new">récent</span>' : ''}</span></span>
   </button>`).join('');
 }
