@@ -189,7 +189,7 @@ $('#form').onsubmit = async e => {
     }
     if (resources.some(r => r.url === entry.url)) throw new Error('Ce lien est déjà dans Mes ciels.');
     entry.texte = $('#texte').value.trim() || undefined;
-    entry.linkedin = li || undefined;
+    entry.linkedin = li && li !== entry.url ? li : undefined;
     resources.push(entry);
     files.push({ path: 'resources.json', content: JSON.stringify(resources, null, 2) + '\n' });
     await commit(files, `Ajout : ${titre}`);

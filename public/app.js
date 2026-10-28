@@ -332,7 +332,7 @@ function select(it) {
     <h2 id="card-title">${esc(it.titre)}</h2>
     ${it.vignette ? `<a href="${esc(it.url)}" target="_blank" rel="noopener"><img class="thumb" src="${esc(it.vignette)}" alt="Aperçu : ${esc(it.titre)}"></a>` : ''}
     <div class="actions"><a class="btn primary" href="${esc(it.url)}" target="_blank" rel="noopener">${it.f.action} ↗</a>
-      ${it.linkedin ? `<a class="btn" href="${esc(it.linkedin)}" target="_blank" rel="noopener">Le post LinkedIn ↗</a>` : ''}
+      ${it.linkedin && it.linkedin !== it.url ? `<a class="btn" href="${esc(it.linkedin)}" target="_blank" rel="noopener">Le post LinkedIn ↗</a>` : ''}
       ${it.lienPartage ? `<a class="btn" href="${esc(it.lienPartage)}" target="_blank" rel="noopener">Lien partagé ↗</a>` : ''}
       <button class="btn" id="share">Copier le lien</button></div>
     ${sn?.label ? `<p class="found">Trouvé ${sn.label} : ${sn.html}</p>` : ''}
