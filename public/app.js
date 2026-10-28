@@ -429,6 +429,7 @@ $('#about-open').addEventListener('click', () => {
 });
 $('#about-close').addEventListener('click', () => about.close());
 about.addEventListener('click', e => { if (e.target === about) about.close(); });
+about.addEventListener('close', () => about.querySelector('video')?.pause());
 
 addEventListener('keydown', e => {
   if (e.key === '/' && document.activeElement !== $('#q')) { e.preventDefault(); $('#q').focus(); }

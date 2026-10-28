@@ -184,3 +184,7 @@ body.card-open .top-actions { display: none; }
   .card { inset: 0; width: auto; border-radius: 0; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* vidéo dans « À propos » */
+#about .about-video { display: block; width: 100%; max-width: 420px; aspect-ratio: 1; margin: 14px auto 4px; border-radius: 12px; border: 1px solid var(--line); background: #eef2f8; }
+#about .video-caption { text-align: center; font-size: 12.5px; color: var(--muted); margin: 0 0 8px; }

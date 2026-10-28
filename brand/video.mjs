@@ -199,4 +199,11 @@ try {
   const ext = result.value.type.includes('mp4') ? 'mp4' : 'webm', out = path.join(dir, 'mes-ciels.' + ext);
   fs.writeFileSync(out, Buffer.from(result.value.b64, 'base64'));
   console.log(`-> brand/mes-ciels.${ext} (${result.value.type}, ${(fs.statSync(out).size / 1e6).toFixed(1)} Mo)`);
+  // copie publiée dans « À propos », avec une image d'attente (le carton final)
+  const media = path.join(dir, '../public/media');
+  fs.mkdirSync(media, { recursive: true });
+  fs.copyFileSync(out, path.join(media, 'mes-ciels.' + ext));
+  const poster = await cdp('Runtime.evaluate', { expression: `(async () => { await ready(); frame(37); return c.toDataURL('image/jpeg', .85); })()`, awaitPromise: true, returnByValue: true });
+  fs.writeFileSync(path.join(media, 'mes-ciels.jpg'), Buffer.from(poster.result.value.split(',')[1], 'base64'));
+  console.log(`-> public/media/mes-ciels.${ext} + mes-ciels.jpg`);
 } finally { ws.close(); edge.kill(); }
